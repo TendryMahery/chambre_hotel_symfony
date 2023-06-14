@@ -1,0 +1,56 @@
+{% extends "base.html.twig" %}
+{% block title %}admin_user!{% endblock %}
+{% block body %}
+<div class="text-center text-2xl font-bold mb-10 mt-20">
+    Liste des utlisateur
+</div>
+
+<div class="flex justify-around">
+<div>
+<table class="border-collapse border border-gray-400 ...">
+  <thead>
+    <tr class="">
+      <th class="border border-gray-400 font-bold px-20">id</th>
+      <th class="border border-gray-400 px-12">nom</th>
+      <th class="border border-gray-400 px-12">prenom</th>
+      <th class="border border-gray-400 px-12">roles</th>
+      <th class="border border-gray-400 px-12">action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in user %}
+    <tr>
+      <td class="border border-gray-400 px-12">{{user.id}}</td>
+      <td class="border border-gray-400 px-12">{{user.nom}}</td>
+      <td class="border border-gray-400 px-12">{{user.prenom}}</td>
+      <td class="border border-gray-400 px-12"> 
+      {% for role in user.role %}
+        {% if role == "ROLE_ADMIN" %}
+            admin
+           {% else %}
+            utilisateur
+        {% endif %}
+         
+      {% endfor %} 
+    </td>
+    
+    <td class="border border-gray-400 px-12"><a href="{{ path('modifier',{'id':user.id}) }}"><button type="submit" class="bg-yellow-500 p-1 rounded text-white focus:bg-yellow-600 hover:bg-yellow-400">modifier</button></a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<div>
+    <td class="border border-gray-400 px-12">
+        {{form_start(form)}}
+            {{form_row(form.nom)}}
+            {{form_row(form.prenom)}}
+            {{form_row(form.role)}}
+            <button type="submit" class="bg-indigo-600 p-2 text-sm text-white hover:bg-indigo-400 rounded">modifier</button>
+        {{form_end(form)}}
+    </td> 
+     
+</div>
+</div>
+{% endblock %}

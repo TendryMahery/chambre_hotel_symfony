@@ -3,54 +3,107 @@
 {% block title %}Hello AdminController!{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="d-flex">
-        <div class="col-md-8">
-            <table class="table  table-sm table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">titre</th>
-                    <th scope="col">description</th>
-                    <th scope="col">nombre de commentaire</th>
-                    <th scope="col">photo</th>
-                    <th scope="col">action</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for article in article %}
-                <tr class="">
-                    <th scope="row">{{ article.id }}</th>
-                    <td>{{ article.title }}</td>
-                    <td>{{ article.description }}</td>
-                    <td>{{ article.commentaire | length }}</td>
-                    <td><img src="{{ vich_uploader_asset(article, 'imageFile')}}" width="30px" height="30px"/></td>
-                    <td>
-                        <a href="{{ path('edit',{'id':article.id}) }}"><button class="btn-sm btn-success">edit</button></a>
-                        <a href=""><button class="btn-sm btn-danger">supprimer</button></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
-        </div>
-        <div class="col-md-4 mx-4">
-            <h3>Ajouter un article</h3>
-            <div>
-
-                <div class="form-group">
-                    {{form_start(form)}}
-                    {{form_row(form.title)}}
-                    {{form_row(form.description)}}
-                    {{form_row(form.imageFile)}}
-                    {{form_rest(form)}}
-                    <button class="btn btn-primary">Ajouter</button>
-                    {{form_end(form)}}
-                </div>
-            </div>
-        </div>
-        </div>
-
+<div class="bg-white">
+  <div class="bg-indigo-400 text-white flex  p-2">
+    <a href="{{ path ('admin_actu')}}"><h1 class="mx-4 cursor-pointer hover:text-gray-500">amdin actualité</h1></a>
+    <a href="{{ path ('admin_user')}}"><h1 class="mx-4 cursor-pointer hover:text-gray-500">amdin user</h1></a>
+    <div class="flex">
+     <input type="text" placeholder="recherche" class="focus:outline-none px-4 block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+      <button class="bg-indigo-900 rounded p-1 text-white"><i class="fas fa-search"></i>recherche</button>
     </div>
+  </div>
+  <div class="mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-1 px-4 py-1 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
+    <div>
+        {% for message in app.flashes('success') %}
+          <div class="text-green-500 bg-green-200 w-full p-2 rounded-lg">
+            {{message}}
+          </div>
+        {% endfor %}
+        {% for message in app.flashes('suppression') %}
+          <div class="text-red-500 bg-red-200 w-full p-2 rounded-lg">
+            {{message}}
+          </div>
+        {% endfor %}
+        {% for message in app.flashes('nonDisponible') %}
+          <div class="text-red-500 bg-red-200 w-full p-2 rounded-lg">
+            {{message}}
+          </div>
+        {% endfor %}
+      <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Administration des chambres</h2>
+      <p class="mt-4 text-gray-500">The walnut wood card tray is precision milled to perfectly fit a stack of Focus cards. The powder coated steel divider separates active cards from new ones, or can be used to archive important task lists.</p>
 
+      <dl class="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
+        {% for chambre in chambre %}
+        <div class="border-t border-gray-200 pt-4">
+            <div class="flex justify-between">
+                 <dt class="font-medium text-gray-900">Nom de la chambre :{{ chambre.nomchambre }}</dt>
+                 <i class="fas fa-times"></i>
+            </div>
+         
+          <dd class="mt-2 text-sm text-gray-500">Au etage :{{chambre.etage}}</dd>
+          <dd class="mt-2 text-sm text-gray-500">Bareme de personne : {{chambre.contenumax}}</dd>
+          <dd class="mt-2 text-sm text-gray-500">Bareme de personne : {{chambre.personne}}</dd>
+           <dd class="mt-2 text-sm text-gray-500">
+          {% if chambre.etat == false %}
+           <h1>Disponibilité : <span class="text-green-500 font-bold">Disponible</span> </h1> 
+            {% else %}
+            <div>Disponibilité : <span class="text-red-500 font-bold">non Disponible </span> </div>
+             
+          {% endif %}
+          </dd>
+          <div>
+            {% if chambre.etat == false %}
+            <a href="{{ path ('reservation',{'id':chambre.id}) }}"> <button class="focus:bg-indigo-600 bg-indigo-500 p-1 text-sm text-white rounded">reserver</button> </a>
+            {% endif %}
+            <a href="{{ path ('edit',{'id':chambre.id}) }}"><button class="focus:bg-green-600 bg-green-500 p-1 text-sm text-white rounded">edit</button></a>
+            <a href="{{ path ('supprimer', {'id': chambre.id}) }}"> <button class="focus:bg-green-600 bg-red-500 p-1 text-sm text-white rounded">supprimer</button></a>
+            {% if chambre.etat == true %}      
+            <a href="{{ path ('liberer', {'id': chambre.id}) }}"> <button class="focus:bg-green-600 bg-gray-800 p-1 text-sm text-white rounded">liberer</button></a>
+            {% endif %}
+          </div>
+          
+        </div>
+        {% endfor %}
+      </dl>
+    </div>
+      {{form_start(form)}}
+    <div class="grid grid-cols-1 gap-4 sm:gap-6 lg:gap-8">
+        <h1 class="text-2xl font-bold">ajout de chambre</h1>
+     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6"> 
+        <div class="sm:col-span-3">
+          <div class="mt-2">
+              {{form_row(form.nom_chambre)}}
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <div class="mt-2">
+            {{form_row(form.etage)}}
+          </div>
+        </div>
+        <div class="sm:col-span-3">
+          <div class="mt-2">
+            {{form_row(form.contenu_max)}}
+          </div>
+        </div>
+         <div class="sm:col-span-3">
+          <div class="mt-2">
+            {{form_row(form.etat)}}
+          </div>
+        </div>
+    </div>
+    </div>
+    {{form_widget(form)}}
+        <div class="mt-5 flex justify-center">
+            <button class="bg-indigo-600 p-2 text-sm text-white hover:bg-indigo-400 rounded">
+              {% if(edit) %}
+                Edit
+              {% else %}
+                Ajouter
+              {% endif %}
+            </button>
+        </div> 
+        {{form_end(form)}} 
+  </div>
+</div>
 {% endblock %}

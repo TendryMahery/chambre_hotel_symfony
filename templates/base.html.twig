@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('w3css/w3.css') }}">
     {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset ('tailwind/tailwind.min.css')}}">
     {#{{ encore_entry_link_tags('app') }}#}
     {% endblock %}
 
@@ -16,46 +15,38 @@
 </head>
 
 <body>
-
-    <header class="p-3 bg-dark text-white">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href=""><i class="fab fa-blogger-b"></i></a>
-
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li>
-                        <a href="" class="nav-link px-2 text-white">Accueil</a>
-                    </li>
-                    <li>
-                        <a href="" class="nav-link px-2 text-white">Les articles</a>
-                    </li>
-                    <li>
-                        <a href="" class="nav-link px-2 text-white"></a>
-                    </li>
-                    <li>
-                        <a href="{{path('admin')}}" class="nav-link px-2 text-white">Admin</a>
-                    </li>
-                </ul>
-
-                <div class="text-end">
-                    {%if not app.user%}
-                    <a href="{{path('connexion')}}" class="btn btn-success">Connexion</button>
-                    </a>
-                    {%else%}
-                    <a href="{{path('deconnexion')}}" class="btn btn-danger sm">
-                        Deconnexion</button>
-                    </a>
-                    {%endif%}
-                    <a href="{{path('inscription')}}" class="btn btn-outline-primary">
-                        Inscription</button>
-                    </a>
-                </div>
-            </div>
+<div class="bienvenu text-gray-700">
+    <div class="bar bg-blue-500 text-white md:flex justify-between p-2">
+        <div class="logo mx-4">
+            <h1 class="text-xl">Gestion de chambre d'hotel</h1>
+           
         </div>
-    </header>
-    <script src="fontawesome/all.js"></script>
+        <div class="soratra flex">
+            <input type="text" placeholder="recherche" class="focus:outline-none px-4 block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            <button class="bg-indigo-900 rounded p-1 text-white"><i class="fas fa-search"></i>recherche</button>
+             {% if app.user %}
+            <h1 class="text-sm bg-blue-800 rounded-lg p-1"><i class="fas fa-users"></i> {{app.user.prenom}}</h1>
+            {% endif %}
+
+            <a href="{{ path ('actualite') }}"><h1 class="mx-4 cursor-pointer hover:text-gray-500 font-bold">Actualité</h1></a> 
+            {% if is_granted("ROLE_ADMIN") %}
+             <a href="{{ path ('admin_chambre')}}"><h1 class="mx-4 cursor-pointer"> <i class="fas fa-user"></i> amdin</h1></a> 
+            {% endif %}
+             
+
+           {% if not app.user %}
+            <a href="{{ path('login') }}"><h1 class="mx-4 text-white border border-white rounded bg-green-400 hover:bg-yellow-500 p-1 px-2"><i class="fas fa-sign-in-alt"></i> login</h1></a>
+            {% else %}
+            <a href="{{ path ('logout')}}"> <h1 class="mx-4 text-white border border-white rounded bg-red-400 hover:bg-yellow-500 p-1 px-2"><i class="fas fa-sign-out-alt"></i>logout</h1> </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+ <script src="/fontawesome/js/all.js"></script>
     {% block body %}
     {% endblock %}
+
+    
 </body>
 
 </html>

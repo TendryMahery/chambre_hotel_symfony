@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LoginController!{% endblock %}
+
+{% block body %}
+<section class="bg-gray-200 h-screen">
+    {% for message in app.flashes('register') %}
+          <div class="text-green-500 bg-green-200 w-full p-2 rounded-lg">
+            {{message}}
+          </div>
+    {% endfor %}
+<div class="flex justify-center content-center items-center">
+     {% for message in app.flashes('register') %}
+          <div class="text-green-500 bg-green-200 w-full p-2 rounded-lg">
+            {{message}}
+          </div>
+    {% endfor %}
+    <div class="bg-white shadow-lg max-w-lg p-4 mt-12">
+        <img src="w3images/app.jpg" alt="" srcset="" class="object-cover h-40">
+        <div class="">
+            <h1 class="font-bold text-gray-600 text-2xl mb-4">Connexion</h1>
+            <form action="{{ path('login') }}" method="post">
+            <div class="mb-4 flex flex-col">
+                <label for="prenom">prenom</label>
+                <input type="text" name="_username" placeholder="prenom" class="border rounded p-2 border-gray-400 focus:outline-none focus:border-gray-500 focus:shadow-outline mb-4">
+                <label for="mot de passe">mot de passe</label>
+                <input type="password" name="_password" placeholder="mdp" class="mb-2 border rounded p-2 border-gray-400  focus:outline-none focus:border-gray-500 focus:shadow-outline mb-4">
+
+                <button type="submit" class="bg-blue-400 p-2 rounded focus:bg-blue-500 text-white font-bold">login</button>
+            </div>
+            </form>
+            <h1><a href="{{ path('register') }}">s'inscrire</a> </h1>
+
+            <div class="flex content-center justify-center space-x-6 text-2xl">
+                <i class="fab fa-facebook-square text-blue-600"></i>
+                <i class="fab fa-instagram-square text-yellow-600"></i>
+                <i class="fab fa-google-plus-square text-red-600"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    
+</div>
+</section>
+{% endblock %}

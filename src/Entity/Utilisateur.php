@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -31,25 +29,14 @@ class Utilisateur implements UserInterface
     private $prenom;
 
     /**
+     * @ORM\Column(type="json")
+     */
+    private $role = [];
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $mdp;
-
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="utilisateur")
-     */
-    private $commentaire;
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->commentaire = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -79,6 +66,17 @@ class Utilisateur implements UserInterface
 
         return $this;
     }
+    public function getRole(): ?array
+    {
+        return $this->role;
+    }
+
+    public function setRole(array $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
 
     public function getMdp(): ?string
     {
@@ -92,59 +90,26 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+
+
+    public function getUsername()
     {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Commentaire>
-     */
-    public function getCommentaire(): Collection
-    {
-        return $this->commentaire;
-    }
-
-    public function addCommentaire(Commentaire $commentaire): self
-    {
-        if (!$this->commentaire->contains($commentaire)) {
-            $this->commentaire[] = $commentaire;
-            $commentaire->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommentaire(Commentaire $commentaire): self
-    {
-        if ($this->commentaire->removeElement($commentaire)) {
-            // set the owning side to null (unless already changed)
-            if ($commentaire->getUtilisateur() === $this) {
-                $commentaire->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getUsername(){
         return $this->prenom;
     }
 
-    public function  getSalt(){}
-    public function getPassword(){
+    public function  getSalt()
+    {
+    }
+    public function getPassword()
+    {
         return $this->mdp;
     }
-    public function eraseCredentials(){}
+    public function eraseCredentials()
+    {
+    }
 
-    public function getRoles(){
-        return ['ROLE_USER'];
-     } 
+    public function getRoles()
+    {
+        return $this->role;
+    }
 }

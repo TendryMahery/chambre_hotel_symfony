@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="bg-gray-200 h-screen">
+    <div class="p-12">
+         {% for message in app.flashes('modification_actu') %}
+          <div class="text-green-500 bg-green-200 w-full p-2 rounded-lg font-bold">
+            {{message}}
+          </div>
+        {% endfor %}
+        {% for message in app.flashes('suppression_actu') %}
+          <div class="text-red-500 bg-red-200 w-full p-2 rounded-lg font-bold">
+            {{message}}
+          </div>
+        {% endfor %}
+        <section class="flex justify-around">
+            <div class="text-center">
+                <h1 class="mb-12 text-2xl font-bold">liste des actualité</h1>
+            <table class="flex-auto">
+            <thead>
+                <tr>
+                <th class="border border-gray-400 px-6">id</th>
+                <th class="border border-gray-400 px-6">titre</th>
+                <th class="border border-gray-400 px-6">image</th>
+                <th class="border border-gray-400 px-6">description</th>
+                <th class="border border-gray-400 px-6">prix</th>
+                <th class="border border-gray-400 px-6">promotion</th>
+                <th class="border border-gray-400 px-6">action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for actualite in actualite %}
+                    <tr>
+                    <td class="border border-gray-400 px-6">{{actualite.id}}</td>
+                    <td class="border border-gray-400 px-6">{{actualite.titre}}</td>
+                    <td class="border border-gray-400 px-6"><img src="{{ vich_uploader_asset(actualite, 'imageFile') }}" alt="" srcset="" class="w-8 h-8"></td>
+                    <td class="border border-gray-400 px-6">{{actualite.description}}</td>
+                    <td class="border border-gray-400 px-6">{{actualite.prix}}</td>
+                    <td class="border border-gray-400 px-6">{{actualite.promotion}}</td>
+                    <td class="border border-gray-400 flex px-6">
+                    <a href="{{ path('edit_actu', {'id': actualite.id}) }}"><button class="bg-blue-500 p-1 text-white rounded hover:bg-blue-400"><i class="fas fa-edit"></i></button></a>
+                    <a href="{{ path('delete_actu', {'id': actualite.id}) }}"><button class="bg-red-500 p-1 text-white rounded hover:bg-red-400"><i class="fas fa-trash-alt"></i></button></a>       
+                    </td>
+                </tr>
+                {% endfor %}
+               
+            </tbody>
+            </table>
+            </div>
+
+            <div class="ajout">
+                <div>
+                    {{form_start(form)}}
+                        <div class="">
+                            <h1 class="text-2xl font-bold">ajout des actualité</h1>
+                            <div class="mt-10"> 
+                                <div class="sm:col-span-3">
+                                        <div class="mt-2">
+                                           {{form_row(form.titre)}}
+                                        </div>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                 
+                                        <div class="mt-2">
+                                           {{form_row(form.imageFile)}}
+                                        </div>
+                                </div>
+                                <div class="sm:col-span-3">
+                                  
+                                        <div class="mt-2">
+                                          {{form_row(form.description)}}
+                                        </div>
+                                </div>
+                                <div class="sm:col-span-3">
+                                        <div class="mt-2">
+                                           {{form_row(form.prix)}}
+                                        </div>
+                                </div>
+                                <div class="sm:col-span-3">
+                                    
+                                        <div class="mt-2">
+                                            {{form_row(form.promotion)}}
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                         {{form_rest(form)}}
+                            <div class="mt-5 flex justify-center">
+                                <button type="submit" class="bg-indigo-600 p-2 text-sm text-white hover:bg-indigo-400 rounded">Ajouter</button>
+                            </div>  
+                           
+                    {{form_end(form)}}
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+
+{% endblock %}
