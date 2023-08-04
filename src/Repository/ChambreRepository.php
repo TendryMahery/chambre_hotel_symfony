@@ -75,8 +75,4 @@ class ChambreRepository extends ServiceEntityRepository
         ;
     }
     */
-
-    public function findPersonne(): Chambre
-    {
-    }
 }

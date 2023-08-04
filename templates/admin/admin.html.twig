@@ -7,10 +7,12 @@
   <div class="bg-indigo-400 text-white flex  p-2">
     <a href="{{ path ('admin_actu')}}"><h1 class="mx-4 cursor-pointer hover:text-gray-500">amdin actualité</h1></a>
     <a href="{{ path ('admin_user')}}"><h1 class="mx-4 cursor-pointer hover:text-gray-500">amdin user</h1></a>
+    {{form_start(form_search)}}
     <div class="flex">
-     <input type="text" placeholder="recherche" class="focus:outline-none px-4 block rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-      <button class="bg-indigo-900 rounded p-1 text-white"><i class="fas fa-search"></i>recherche</button>
+        {{form_row(form_search.nomPersonne)}}
+     <a href="{{ path ('recherche')}}"><button class="bg-indigo-900 rounded p-1 text-white"><i class="fas fa-search"></i>recherche</button> </a> 
     </div>
+    {{form_end(form_search)}}
   </div>
   <div class="mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-1 px-4 py-1 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
     <div>
@@ -29,6 +31,13 @@
             {{message}}
           </div>
         {% endfor %}
+
+         {#  recherche #}
+          {% if recherche %}
+              <h1>{{personne.nom}}</h1>
+          {% endif %}
+          
+        {#  recherche #}
       <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Administration des chambres</h2>
       <p class="mt-4 text-gray-500">The walnut wood card tray is precision milled to perfectly fit a stack of Focus cards. The powder coated steel divider separates active cards from new ones, or can be used to archive important task lists.</p>
 
@@ -42,7 +51,7 @@
          
           <dd class="mt-2 text-sm text-gray-500">Au etage :{{chambre.etage}}</dd>
           <dd class="mt-2 text-sm text-gray-500">Bareme de personne : {{chambre.contenumax}}</dd>
-          <dd class="mt-2 text-sm text-gray-500">Bareme de personne : {{chambre.personne}}</dd>
+          <dd class="mt-2 text-sm text-gray-500">Bareme de personne : </dd>
            <dd class="mt-2 text-sm text-gray-500">
           {% if chambre.etat == false %}
            <h1>Disponibilité : <span class="text-green-500 font-bold">Disponible</span> </h1> 

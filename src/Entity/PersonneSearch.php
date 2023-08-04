@@ -10,18 +10,17 @@ class PersonneSearch
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom_personne;
+    private $nomPersonne;
 
 
-    public function getNom(): string
+    public function getNomPersonne()
     {
-
-        return $this->nom_personne;
+        return $this->nomPersonne;
     }
 
-    public function setNom(?string $nom_personne): self
+    public function setNomPersonne(?string $nomPersonne): self
     {
-        $this->nom_personne = $nom_personne;
+        $this->nomPersonne = $nomPersonne;
 
         return $this;
     }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Actualite;
 use App\Entity\Chambre;
 use App\Entity\Personne;
+use App\Entity\PersonneSearch;
 use App\Entity\Utilisateur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,8 @@ use App\Form\UserControlType;
 use App\Repository\UtilisateurRepository;
 use App\Form\ActualiteType;
 use App\Repository\ActualiteRepository;
+use App\Form\PersonneSearchType;
+use App\Repository\PersonneRepository;
 
 class AdminController extends AbstractController
 {
@@ -30,8 +33,11 @@ class AdminController extends AbstractController
         if ($chambre == null) {
             $chambre = new Chambre();
         }
+
+        $personne_search = new PersonneSearch();
         $entityManager = $manager->getManager();
         $form = $this->createForm(ChambreType::class, $chambre);
+        $form_search = $this->createForm(PersonneSearchType::class, $personne_search);
         $form->handleRequest($request);
         $id = $chambre->getId();
         $etat = $chambre->getEtat();
@@ -57,9 +63,10 @@ class AdminController extends AbstractController
         return $this->render('admin/admin.html.twig', [
             'controller_name' => 'AdminController',
             'form' => $form->createView(),
+            'form_search' => $form_search->createView(),
             'chambre' => $chambres,
             'edit' => $chambre->getId() !== null,
-
+            'recherche' => false
 
         ]);
     }
@@ -169,6 +176,23 @@ class AdminController extends AbstractController
             'controller_name' => 'admin_user',
             'form' => $form->createView(),
             'user' => $repository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/recherche", name="recherche")
+     */
+
+    public function recherche(PersonneRepository $personneRepository): Response
+    {
+        $personneSearch = new PersonneSearch();
+        $personne =  $personneRepository->findPersonne($personneSearch);
+
+        return $this->render('admin/recherche.html.twig', [
+            'controller_name' => 'recherche',
+            'recherche' => true,
+            'personne' => $personne,
+
         ]);
     }
 }

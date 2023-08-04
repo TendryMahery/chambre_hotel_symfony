@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Personne;
+use App\Entity\PersonneSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -45,6 +46,15 @@ class PersonneRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+
+    public function findPersonne(PersonneSearch $p)
+    {
+        return $this->createQueryBuilder('p')
+            ->Where('p.nom = :nomPersonne')
+            ->setParameter('nomPersonne', $p->getNomPersonne())
+            ->getQuery();
     }
 
     // /**
